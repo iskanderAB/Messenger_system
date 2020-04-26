@@ -1,0 +1,25 @@
+{
+  "name": "messenger_system",
+  "version": "1.0.0",
+  "description": "\"# Messenger_system\"  ## Messenger system for symfony good luck for your project  ## bootstrap :https://bootsnipp.com/tags/chat/4",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iskanderAB/Messenger_system.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/iskanderAB/Messenger_system/issues"
+  },
+  "homepage": "https://github.com/iskanderAB/Messenger_system#readme",
+  "dependencies": {
+    "axios": "^0.19.2"
+  }
+}

@@ -7,6 +7,8 @@ use App\Repository\UserRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mercure\Update;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class MessagesController extends AbstractController
@@ -30,5 +32,15 @@ class MessagesController extends AbstractController
             'friends' => $users->findAll(),
             'conversation' => $conversation
         ]);
+    }
+
+    /**
+     * @Route("/messages/sendData", name="sendData")
+     */
+    public function sendData(Request $request,MessageBusInterface $bus)
+    {
+        $update = new Update();
+        dump($request);
+        return $this->json($request->getContent(), 200 ,[] );
     }
 }

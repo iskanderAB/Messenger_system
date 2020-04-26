@@ -6,9 +6,7 @@
 <!------ Include the above in your HEAD tag ---------->
 <html>
 <head>
-
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" type="text/css" rel="stylesheet" >
-
 </head>
 <body>
 <div class="container">
@@ -34,7 +32,7 @@
                     {% for friend  in friends  %}
                     <div class="chat_list {% if loop.first %} active_chat {% endif  %}">
                         <div class="chat_people">
-                            <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                            <div class="chat_img"> <img src="{{ asset('assets/image/user-profile.png') }}" alt="sunil"> </div>
                             <div class="chat_ib">
                                 <h5>{{ friend.fullName}} <span class="chat_date">Dec 25</span></h5>
                                 <p>Test, which is a new approach to have all solutions
@@ -49,7 +47,7 @@
             <!-- end of people list -->
 
             <div class="mesgs">
-                <div class="msg_history">
+                <div class="msg_history" id="listAdd">
                     {% for message in conversation.messages  %}
                         {% if message.fromUser.id == app.user.id %}
                             <div class="incoming_msg">
@@ -67,30 +65,65 @@
                                     <span class="time_date">{{ message.createdAt| date() }}</span> </div>
                             </div>
                         {% endif %}
+                        <div class="outgoing_msg" hidden>
+                            <div class="sent_msg">
+                                <p>test test</p>
+                                <span class="time_date">12/12/2020</span> </div>
+                        </div>
                     {% endfor %}
+                    <div class="outgoing_msg"  hidden>
+                        <div class="sent_msg">
+                            <p>test test</p>
+                            <span class="time_date">12/12/2020</span> </div>
+                    </div>
                 </div>
                 <div class="type_msg">
                     <div class="input_msg_write">
-                        <input type="text" class="write_msg" placeholder="Type a message" />
-                        <button class="msg_send_btn" type="button"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+                        <input type="text" class="write_msg" placeholder="Type a message" id="message" />
+                        <button class="msg_send_btn" type="button" id="btn-send"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
                     </div>
                 </div>
             </div>
         </div>
-        <p class="text-center top_spac"> Design by <a target="_blank" href="#">Sunil Rajput</a></p>
     </div></div>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
-    axios.post('/user', {
-        firstName: 'Fred',
-        lastName: 'Flintstone'
-    })
-        .then(function (response) {
-            console.log(response);
+    let btn =document.getElementById("btn-send");
+    let send =(My_data)=> {
+        axios.post('{{ path('sendData') }}', {
+            data: My_data,
+            user_friend:{{ conversation.id }}
         })
-        .catch(function (error) {
-            console.log(error);
-        });
+            .then(function (response) {
+                if((response.status == 200 || response.status == 2001) && My_data != ""  ){
+                    let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                    let today = new Date();
+                    let outPutMessage = document.createElement("div") ;
+                    let sentMessage = document.createElement("div") ;
+                    let p = document.createElement("p") ;
+                    let span = document.createElement("span") ;
+                    outPutMessage.classList.add("outgoing_msg") ;
+                    sentMessage.classList.add("sent_msg");
+                    span.classList.add("time_date");
+                    p.innerText = My_data ;
+                    span.innerHTML =   months[today.getMonth()]+" "+ today.getDate() +" "+ today.getFullYear()+" "+ today.getHours()+":"+today.getMinutes() ;
+                    sentMessage.append(p);
+                    sentMessage.append(span);
+                    outPutMessage.append(sentMessage);
+                    outPutMessage.append();
+                    document.getElementById("listAdd").append(outPutMessage);
+                }
+
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+    btn.onclick =()=> {
+        let data =document.getElementById("message").value;
+        send(data);
+    }
+
 </script>
 
 </body>
