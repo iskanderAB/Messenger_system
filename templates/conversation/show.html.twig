@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Conversation{% endblock %}
+
+{% block body %}
+    <h1>Conversation</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ conversation.id }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('conversation_index') }}">back to list</a>
+
+    <a href="{{ path('conversation_edit', {'id': conversation.id}) }}">edit</a>
+
+    {{ include('conversation/_delete_form.html.twig') }}
+{% endblock %}
