@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/iskanderAB/Messenger_system#readme",
   "dependencies": {
-    "axios": "^0.19.2"
+    "axios": "^0.19.2",
+    "bootstrap": "4.*"
   }
 }

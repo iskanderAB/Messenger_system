@@ -1,6 +1,6 @@
 <link href="{{ asset('assets/css/css/bootstrap.min.css') }}" rel="stylesheet" id="bootstrap-css">
 <link href="/assets/css/style.css" rel="stylesheet">
-<script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('assets/js/bootstrap.js') }}"></script>
 <script src="{{ asset('assets/js/jquery.js') }}"></script>
 
 <!------ Include the above in your HEAD tag ---------->
@@ -10,10 +10,9 @@
 </head>
 <body>
 <div class="container">
-    <h3 class=" text-center">Messaging</h3>
+    <h3 class=" text-center">{{user.fullName}}</h3>
     <div class="messaging">
         <div class="inbox_msg">
-
            <!--people list -->
             <div class="inbox_people">
                 <div class="headind_srch">
@@ -43,15 +42,13 @@
                     {% endfor %}
                 </div>
             </div>
-
             <!-- end of people list -->
-
             <div class="mesgs">
                 <div class="msg_history" id="listAdd">
                     {% for message in conversation.messages  %}
                         {% if message.fromUser.id == app.user.id %}
                             <div class="incoming_msg">
-                                <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                                <div class="incoming_msg_img" id="id_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
                                 <div class="received_msg">
                                     <div class="received_withd_msg">
                                         <p>{{ message.content }}</p>
@@ -87,43 +84,18 @@
         </div>
     </div></div>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="{{ asset('assets/js/core.js') }}"></script>
 <script>
     let btn =document.getElementById("btn-send");
-    let send =(My_data)=> {
-        axios.post('{{ path('sendData') }}', {
-            data: My_data,
-            user_friend:{{ conversation.id }}
-        })
-            .then(function (response) {
-                if((response.status == 200 || response.status == 2001) && My_data != ""  ){
-                    let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-                    let today = new Date();
-                    let outPutMessage = document.createElement("div") ;
-                    let sentMessage = document.createElement("div") ;
-                    let p = document.createElement("p") ;
-                    let span = document.createElement("span") ;
-                    outPutMessage.classList.add("outgoing_msg") ;
-                    sentMessage.classList.add("sent_msg");
-                    span.classList.add("time_date");
-                    p.innerText = My_data ;
-                    span.innerHTML =   months[today.getMonth()]+" "+ today.getDate() +" "+ today.getFullYear()+" "+ today.getHours()+":"+today.getMinutes() ;
-                    sentMessage.append(p);
-                    sentMessage.append(span);
-                    outPutMessage.append(sentMessage);
-                    outPutMessage.append();
-                    document.getElementById("listAdd").append(outPutMessage);
-                }
-
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-    }
+    let user ={{ user.id }};
+    loadData("{{path('messages')}}");
     btn.onclick =()=> {
         let data =document.getElementById("message").value;
-        send(data);
+        if(data != "") {
+            send(data,'{{ path('sendData',{conversation : conversation.id}) }}',user);
+        }
+        document.getElementById("message").value="";
     }
-
 </script>
 
 </body>
